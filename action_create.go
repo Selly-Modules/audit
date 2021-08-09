@@ -38,7 +38,7 @@ func (s Service) Create(payload CreatePayload) {
 			ID:   payload.Author.ID,
 			Name: payload.Author.Name,
 		},
-		CreatedAt: Now(),
+		CreatedAt: now(),
 	}
 
 	// Insert to db
