@@ -2,8 +2,8 @@ package audit
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/Selly-Modules/logger"
 	"github.com/Selly-Modules/mongodb"
 )
 
@@ -44,8 +44,9 @@ func (s Service) Create(payload CreatePayload) {
 	// Insert to db
 	colName := getColName(payload.Target)
 	if _, err := s.DB.Collection(colName).InsertOne(ctx, doc); err != nil {
-		fmt.Println("*** Audit create log error", err.Error())
-		fmt.Println("*** Payload", payload)
-		fmt.Println("*****************")
+		logger.Error("audit - Create", logger.LogData{
+			"payload": payload,
+			"error":   err.Error(),
+		})
 	}
 }
