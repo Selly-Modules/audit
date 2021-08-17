@@ -26,7 +26,6 @@ func (s Service) All(query AllQuery) []Audit {
 
 	// Find db
 	cursor, err := s.DB.Collection(colName).Find(ctx, bson.D{
-		{"source", s.Source},
 		{"target", query.Target},
 		{"targetId", query.TargetID},
 	}, &options.FindOptions{

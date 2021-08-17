@@ -6,9 +6,9 @@ import (
 
 func (s Service) indexDB() {
 	// Index key
-	commonIndex := mongodb.NewIndexKey("source", "target", "targetId")
+	commonIndex := mongodb.NewIndexKey("target", "targetId")
 
-	// Index all allowed sources
+	// Index all targets
 	for _, target := range s.Targets {
 		mongodb.CreateIndex(getColName(target), commonIndex)
 	}

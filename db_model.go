@@ -9,7 +9,6 @@ import (
 // Audit ...
 type Audit struct {
 	ID        primitive.ObjectID `bson:"_id" json:"id"`
-	Source    string             `bson:"source" json:"source"`
 	Target    string             `bson:"target" json:"target"`
 	TargetID  string             `bson:"targetId" json:"targetId"`
 	Action    string             `bson:"action" json:"action"`

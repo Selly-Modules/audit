@@ -29,7 +29,6 @@ func (s Service) Create(payload CreatePayload) {
 	// Get document
 	doc := Audit{
 		ID:       mongodb.NewObjectID(),
-		Source:   s.Source,
 		Target:   payload.Target,
 		TargetID: payload.TargetID,
 		Action:   payload.Action,

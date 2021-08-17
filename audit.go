@@ -15,8 +15,6 @@ type MongoDBConfig struct {
 
 // Config ...
 type Config struct {
-	// Source of server, e.g: selly
-	Source string
 	// Targets: staff, article, ...
 	Targets []string
 	// MongoDB config, for save documents
@@ -33,8 +31,8 @@ var s *Service
 
 // NewInstance ...
 func NewInstance(config Config) error {
-	if config.Source == "" || len(config.Targets) == 0 || config.MongoDB.Host == "" {
-		return errors.New("please provide all necessary information: source, targets, mongodb")
+	if len(config.Targets) == 0 || config.MongoDB.Host == "" {
+		return errors.New("please provide all necessary information: targets, mongodb")
 	}
 
 	// Connect MongoDB
