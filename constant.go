@@ -1,9 +1,5 @@
 package audit
 
-const (
-	SourceSelly = "selly"
-)
-
 // List actions
 const (
 	ActionCreate            = "create"
