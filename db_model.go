@@ -22,4 +22,5 @@ type Audit struct {
 type Author struct {
 	ID   string `bson:"id" json:"id"`
 	Name string `bson:"name" json:"name"`
+	Type string `bson:"type" json:"type"`
 }

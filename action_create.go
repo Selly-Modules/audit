@@ -21,6 +21,7 @@ type CreatePayload struct {
 type CreatePayloadAuthor struct {
 	ID   string
 	Name string
+	Type string
 }
 
 // Create ...
@@ -37,6 +38,7 @@ func (s Service) Create(payload CreatePayload) {
 		Author: Author{
 			ID:   payload.Author.ID,
 			Name: payload.Author.Name,
+			Type: payload.Author.Type,
 		},
 		CreatedAt: now(),
 		Message:   payload.Message,
