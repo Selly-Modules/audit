@@ -15,6 +15,7 @@ type Audit struct {
 	Data      string             `bson:"data" json:"data"`
 	Author    Author             `bson:"author" json:"author"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
+	Message   string             `bson:"message" json:"message"`
 }
 
 // Author ...
