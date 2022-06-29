@@ -13,6 +13,7 @@ type CreatePayload struct {
 	TargetID string
 	Action   string
 	Data     string
+	Message  string
 	Author   CreatePayloadAuthor
 }
 
@@ -38,6 +39,7 @@ func (s Service) Create(payload CreatePayload) {
 			Name: payload.Author.Name,
 		},
 		CreatedAt: now(),
+		Message:   payload.Message,
 	}
 
 	// Insert to db
