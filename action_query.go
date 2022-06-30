@@ -2,6 +2,7 @@ package audit
 
 import (
 	"context"
+	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -17,27 +18,39 @@ type AllQuery struct {
 }
 
 // All ...
-func (s Service) All(query AllQuery) []Audit {
+func (s Service) All(query AllQuery) (result []Audit, total int64) {
 	var (
 		ctx     = context.Background()
 		colName = getColName(query.Target)
 		skip    = query.Page * query.Limit
-		result  = make([]Audit, 0)
+		wg      sync.WaitGroup
 	)
-	opts := options.Find().SetLimit(query.Limit).SetSkip(skip).SetSort(bson.M{"_id": -1})
-	if query.Sort != nil {
-		opts.SetSort(query.Sort)
-	}
-
-	// Find db
-	cursor, err := s.DB.Collection(colName).Find(ctx, bson.D{
+	cond := bson.D{
 		{"target", query.Target},
 		{"targetId", query.TargetID},
-	}, opts)
-	if err != nil {
-		return result
 	}
-	defer cursor.Close(ctx)
-	cursor.All(ctx, &result)
-	return result
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		opts := options.Find().SetLimit(query.Limit).SetSkip(skip).SetSort(bson.M{"_id": -1})
+		if query.Sort != nil {
+			opts.SetSort(query.Sort)
+		}
+
+		// Find db
+		cursor, err := s.DB.Collection(colName).Find(ctx, cond, opts)
+		if err != nil {
+			return
+		}
+		defer cursor.Close(ctx)
+		cursor.All(ctx, &result)
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		total, _ = s.DB.Collection(colName).CountDocuments(ctx, cond)
+	}()
+	wg.Wait()
+	return result, total
 }
