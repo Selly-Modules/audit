@@ -48,8 +48,9 @@ func (s Service) Create(payload CreatePayload) {
 	colName := getColName(payload.Target)
 	if _, err := s.DB.Collection(colName).InsertOne(ctx, doc); err != nil {
 		logger.Error("audit - Create", logger.LogData{
-			"payload": payload,
-			"error":   err.Error(),
+			Source:  "audit.action_create.Create",
+			Message: err.Error(),
+			Data:    payload,
 		})
 	}
 }
